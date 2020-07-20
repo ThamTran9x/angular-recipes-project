@@ -19,10 +19,13 @@ export class RecipeDetailComponent implements OnInit {
 
   addIngrToSList(): void {
     const ingredients = this.selectedRecipe.ingredients;
-    ingredients.forEach(ingredient => {
-      this.sLService.onAddNewIngredient(ingredient);
-    });
+    // METHOD 1
+    // ingredients.forEach(ingredient => {
+    //   this.sLService.onAddNewIngredient(ingredient);
+    // });
 
+    // METHOD 2 - Add a new method from SLService
+    this.sLService.addNewIngrFromRecipe(ingredients);
   }
 
 }
