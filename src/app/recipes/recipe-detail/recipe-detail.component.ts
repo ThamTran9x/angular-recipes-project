@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 import { Ingredient } from 'src/app/shared/ingredient.model';
+import { ActivatedRoute, Params } from '@angular/router';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -9,11 +11,27 @@ import { Ingredient } from 'src/app/shared/ingredient.model';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
-  @Input() selectedRecipe: Recipe;
+  selectedRecipe: Recipe;
 
-  constructor(private sLService: ShoppingListService) { }
+  constructor(
+    private recipeService: RecipeService,
+    private sLService: ShoppingListService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+
+   // let id = +this.route.snapshot.params['id']; // This way just make id loaded once when app initializes
+
+
+    this.route.params.subscribe(
+      (params: Params) => {
+        const id = +params['id'];
+        console.log('id = ' + id);
+        this.selectedRecipe = this.recipeService.getRecipe(id);
+      }
+
+    );
+
 
   }
 
