@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 import { Ingredient } from 'src/app/shared/ingredient.model';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -12,25 +12,25 @@ import { RecipeService } from '../recipe.service';
 })
 export class RecipeDetailComponent implements OnInit {
   selectedRecipe: Recipe;
+  id: number;
 
   constructor(
     private recipeService: RecipeService,
     private sLService: ShoppingListService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
 
    // let id = +this.route.snapshot.params['id']; // This way just make id loaded once when app initializes
 
-
     this.route.params.subscribe(
       (params: Params) => {
-        const id = +params['id'];
-        this.selectedRecipe = this.recipeService.getRecipe(id);
+        this.id = +params['id'];
+        this.selectedRecipe = this.recipeService.getRecipe(this.id);
       }
 
     );
-
 
   }
 
@@ -43,6 +43,12 @@ export class RecipeDetailComponent implements OnInit {
 
     // METHOD 2 - Add a new method from SLService
     this.sLService.addNewIngrFromRecipe(ingredients);
+  }
+
+  onEditRecipe(): void {
+    this.router.navigate(['edit'], { relativeTo: this.route }); // this is correct method
+    // this.router.navigate(['../', this.id, 'edit'], { relativeTo: this.route }); // this is to practice another method
+
   }
 
 }
