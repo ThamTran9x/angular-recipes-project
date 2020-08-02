@@ -62,6 +62,11 @@ export class RecipeEditComponent implements OnInit {
     return (this.recipeForm.get('ingredients') as FormArray).controls;
   }
 
+  // This is another way to get value of FormControl instead of using local reference
+  get imagePath() {
+    return (this.recipeForm.get('imagePath') as FormControl).value;
+  }
+
   onSubmit(): void {
     // const newRecipe = new Recipe(
     //   this.recipeForm['name'],
@@ -85,6 +90,11 @@ export class RecipeEditComponent implements OnInit {
       })
     );
   }
+
+  onDeleteIngredient(index: number): void {
+    (this.recipeForm.get('ingredients') as FormArray).removeAt(index);
+  }
+
 
   onCancel(): void {
     this.router.navigate(['../'], {relativeTo: this.route});
